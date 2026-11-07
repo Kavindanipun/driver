@@ -65,9 +65,9 @@ body{
 .stage{position:relative;width:clamp(150px,54vw,210px);height:clamp(150px,54vw,210px);margin:46px auto 22px;display:grid;place-items:center}
 .ring{position:absolute;inset:0;border-radius:50%;
   box-shadow:inset 9px 9px 18px var(--lo),inset -9px -9px 18px var(--hi)}
-.road,.riders{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.road{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 .dash{transform-origin:50px 50px;animation:spin 26s linear infinite reverse}
-.riders{animation:spin 8s linear infinite;filter:drop-shadow(1px 2px 2px var(--lo))}
+.riders{position:absolute;left:-20%;top:-20%;width:140%;height:140%;pointer-events:none;animation:spin 8s linear infinite}
 .w{transform-box:fill-box;transform-origin:center;animation:spin .5s linear infinite}
 .bike{animation:bob .28s ease-in-out infinite alternate}
 @keyframes bob{to{transform:translateY(-.6px)}}
@@ -161,7 +161,7 @@ h1{margin:14px 0 4px;text-align:center;font-size:19px;font-weight:600;line-heigh
       <circle class="dash" cx="50" cy="50" r="44" fill="none" style="stroke:var(--hi)" stroke-width=".9" stroke-dasharray="3 2.6"/>
     </svg>
     <div class="orb"><span class="hello" id="hello">Hello</span></div>
-    <svg class="riders" viewBox="0 0 100 100">
+    <svg class="riders" viewBox="-20 -20 140 140">
       <g transform="translate(50 3) scale(.88)"><g class="bike">
         <path d="M7.4-6.2L20-10.5V-1.8Z" fill="#ffd75e" fill-opacity=".16"/>
         <circle class="puff" cx="-10.5" cy="-1.4" r="1.3" style="fill:var(--muted)"/>
