@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Choose a language</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Noto+Sans+Sinhala:wght@400;600&family=Noto+Sans+Tamil:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#e6eaf0; --text:#434d5f; --muted:#8a94a6;
+  --hi:#ffffff; --lo:#c3cad7;
+  --a1:#7fe0ee; --a2:#4fb4d6; --a3:#8b7bea; --on:#ffffff;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px);
+  padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#2a2e36; --text:#dde2ec; --muted:#8b94a8; --hi:#353a45; --lo:#1d2026; --a1:#5fd3e6; --a2:#33a3c8; --a3:#8a7cf0; --on:#0e1a1e;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#2a2e36; --text:#dde2ec; --muted:#8b94a8; --hi:#353a45; --lo:#1d2026; --a1:#5fd3e6; --a2:#33a3c8; --a3:#8a7cf0; --on:#0e1a1e;
+}
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;min-height:100%}
+body{min-height:100dvh}
+body{
+  background:var(--bg);color:var(--text);
+  font-family:"Poppins","Noto Sans Sinhala","Noto Sans Tamil",system-ui,sans-serif;
+  display:flex;justify-content:center;align-items:center;overflow-x:hidden;
+}
+.phone{
+  position:relative;width:100%;max-width:480px;
+  min-height:calc(100dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));
+  padding:22px clamp(20px,6vw,32px) 28px;display:flex;flex-direction:column;
+}
+@media (min-width:900px){
+  .phone{max-width:980px;display:grid;grid-template-columns:1fr 1fr;column-gap:72px;align-content:center;padding:40px 48px}
+  .top{grid-column:1/-1}
+  .stage{grid-column:1;grid-row:2;width:260px;height:260px}
+  h1{grid-column:1;grid-row:3;font-size:24px}
+  .sub{grid-column:1;grid-row:4;font-size:14px}
+  .options{grid-column:2;grid-row:2/5;align-self:center;margin-top:0}
+  .spacer{display:none}
+  .btn{grid-column:2;grid-row:5;margin-top:30px}
+  .toast{grid-column:2;grid-row:6}
+}
+
+/* top bar */
+.top{display:flex;justify-content:space-between;align-items:center}
+.wordmark{font-weight:600;font-size:22px;letter-spacing:.3px;
+  background:linear-gradient(90deg,var(--a2),var(--a3));-webkit-background-clip:text;background-clip:text;color:transparent}
+.tbtn{
+  width:42px;height:42px;border:0;border-radius:50%;cursor:pointer;display:grid;place-items:center;
+  background:var(--bg);color:var(--muted);
+  box-shadow:5px 5px 10px var(--lo),-5px -5px 10px var(--hi);transition:box-shadow .2s,color .2s;
+}
+.tbtn:active{box-shadow:inset 3px 3px 6px var(--lo),inset -3px -3px 6px var(--hi);color:var(--a2)}
+.tbtn:focus-visible{outline:2px solid var(--a2);outline-offset:3px}
+.tbtn svg{width:19px;height:19px}
+
+/* greeting orb */
+.stage{position:relative;width:clamp(150px,54vw,210px);height:clamp(150px,54vw,210px);margin:26px auto 8px;display:grid;place-items:center}
+.ring{position:absolute;inset:0;border-radius:50%;
+  box-shadow:inset 9px 9px 18px var(--lo),inset -9px -9px 18px var(--hi)}
+.orbit{position:absolute;inset:-2px;border-radius:50%;animation:spin 9s linear infinite}
+.orbit::before{content:"";position:absolute;top:6px;left:50%;width:14px;height:14px;margin-left:-7px;border-radius:50%;
+  background:linear-gradient(145deg,var(--a1),var(--a3));box-shadow:0 0 14px var(--a1),0 0 4px var(--a1)}
+.orb{
+  position:relative;width:77%;height:77%;border-radius:50%;display:grid;place-items:center;text-align:center;padding:12px;
+  background:linear-gradient(145deg,var(--hi),var(--lo));
+  box-shadow:10px 10px 22px var(--lo),-10px -10px 22px var(--hi);
+  animation:float 5s ease-in-out infinite;
+}
+.orb::after{content:"";position:absolute;inset:9px;border-radius:50%;background:var(--bg);
+  box-shadow:inset 5px 5px 10px var(--lo),inset -5px -5px 10px var(--hi)}
+.hello{position:relative;z-index:1;font-size:clamp(19px,6vw,25px);font-weight:600;line-height:1.3;
+  background:linear-gradient(135deg,var(--a2),var(--a3));-webkit-background-clip:text;background-clip:text;color:transparent;
+  transition:opacity .22s ease,transform .22s ease}
+.hello.swap{opacity:0;transform:scale(.85)}
+@keyframes spin{to{transform:rotate(360deg)}}
+@keyframes float{50%{transform:translateY(-6px)}}
+
+h1{margin:14px 0 4px;text-align:center;font-size:19px;font-weight:600;line-height:1.5}
+.sub{margin:0;text-align:center;color:var(--muted);font-size:12.5px}
+
+/* options */
+.options{margin:24px 0 0;padding:0;border:0;display:flex;flex-direction:column;gap:18px}
+.opt{position:relative;display:block}
+.opt input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer;z-index:2}
+.card{
+  display:flex;align-items:center;gap:16px;padding:14px 18px;border-radius:22px;
+  background:var(--bg);box-shadow:7px 7px 15px var(--lo),-7px -7px 15px var(--hi);
+  transition:box-shadow .25s ease,transform .25s ease;
+}
+.opt:hover .card{transform:translateY(-2px)}
+.glyph{
+  width:52px;height:52px;border-radius:16px;flex:none;display:grid;place-items:center;
+  font-size:24px;font-weight:600;color:var(--muted);
+  box-shadow:inset 4px 4px 8px var(--lo),inset -4px -4px 8px var(--hi);transition:color .25s;
+}
+.names{flex:1;display:flex;flex-direction:column;line-height:1.4}
+.native{font-size:17px;font-weight:600}
+.latin{font-size:12px;color:var(--muted)}
+.radio{width:28px;height:28px;border-radius:50%;flex:none;display:grid;place-items:center;
+  box-shadow:3px 3px 6px var(--lo),-3px -3px 6px var(--hi)}
+.radio svg{width:15px;height:15px;stroke:var(--on);stroke-width:3.2;fill:none;stroke-linecap:round;stroke-linejoin:round;
+  stroke-dasharray:22;stroke-dashoffset:22;transition:stroke-dashoffset .3s ease .05s}
+.radio{transition:background .25s,box-shadow .25s}
+.opt input:checked + .card{box-shadow:inset 7px 7px 14px var(--lo),inset -7px -7px 14px var(--hi);transform:none}
+.opt input:checked + .card .glyph{color:var(--a2);background:var(--bg)}
+.opt input:checked + .card .radio{background:linear-gradient(145deg,var(--a1),var(--a2));
+  box-shadow:0 0 12px color-mix(in srgb,var(--a1) 60%,transparent)}
+.opt input:checked + .card .radio svg{stroke-dashoffset:0}
+.opt input:focus-visible + .card{outline:2px solid var(--a2);outline-offset:3px}
+
+.spacer{flex:1;min-height:24px}
+.btn{
+  position:relative;width:100%;border:0;cursor:pointer;padding:17px;border-radius:40px;overflow:hidden;
+  font:600 16px "Poppins","Noto Sans Sinhala","Noto Sans Tamil",sans-serif;color:var(--on);
+  background:linear-gradient(120deg,var(--a1),var(--a2) 55%,var(--a3));
+  box-shadow:8px 8px 16px var(--lo),-8px -8px 16px var(--hi);transition:box-shadow .2s,transform .2s;
+}
+.btn:active{transform:scale(.985);box-shadow:inset 4px 4px 9px rgba(0,0,0,.2),inset -3px -3px 8px rgba(255,255,255,.25)}
+.btn:focus-visible{outline:2px solid var(--text);outline-offset:3px}
+.btn .rip{position:absolute;border-radius:50%;background:rgba(255,255,255,.55);transform:scale(0);animation:rip .6s ease-out forwards;pointer-events:none}
+@keyframes rip{to{transform:scale(1);opacity:0}}
+.toast{margin:14px 0 0;text-align:center;font-size:13px;color:var(--a2);font-weight:500;min-height:20px}
+
+/* one orchestrated entrance */
+.in{opacity:0;transform:translateY(16px);animation:in .6s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:calc(var(--i)*90ms)}
+@keyframes in{to{opacity:1;transform:none}}
+@media (prefers-reduced-motion: reduce){
+  *{animation:none!important;transition:none!important}.in{opacity:1;transform:none}
+}
+</style>
+</head>
+<body>
+<main class="phone">
+  <div class="top in" style="--i:0">
+    <span class="wordmark">bite</span>
+    <button class="tbtn" id="theme" type="button" aria-label="Toggle dark mode">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+    </button>
+  </div>
+
+  <div class="stage in" style="--i:1" aria-hidden="true">
+    <div class="ring"></div><div class="orbit"></div>
+    <div class="orb"><span class="hello" id="hello">Hello</span></div>
+  </div>
+
+  <h1 class="in" style="--i:2" id="title">Please choose a language</h1>
+  <p class="sub in" style="--i:2" id="sub">You can change this later in settings</p>
+
+  <fieldset class="options" aria-labelledby="title">
+    <label class="opt in" style="--i:3">
+      <input type="radio" name="lang" value="en" checked>
+      <span class="card"><span class="glyph" aria-hidden="true">Aa</span>
+        <span class="names"><span class="native">English</span><span class="latin">English</span></span>
+        <span class="radio" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></span>
+    </label>
+    <label class="opt in" style="--i:4">
+      <input type="radio" name="lang" value="si">
+      <span class="card"><span class="glyph" aria-hidden="true">අ</span>
+        <span class="names"><span class="native" lang="si">සිංහල</span><span class="latin">Sinhala</span></span>
+        <span class="radio" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></span>
+    </label>
+    <label class="opt in" style="--i:5">
+      <input type="radio" name="lang" value="ta">
+      <span class="card"><span class="glyph" aria-hidden="true">அ</span>
+        <span class="names"><span class="native" lang="ta">தமிழ்</span><span class="latin">Tamil</span></span>
+        <span class="radio" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg></span></span>
+    </label>
+  </fieldset>
+
+  <div class="spacer"></div>
+  <button class="btn in" style="--i:6" id="go" type="button">Continue</button>
+  <p class="toast" id="toast" aria-live="polite"></p>
+</main>
+
+<script>
+const T={
+  en:{hello:"Hello",title:"Please choose a language",sub:"You can change this later in settings",btn:"Continue",done:"Language set to English"},
+  si:{hello:"ආයුබෝවන්",title:"කරුණාකර භාෂාවක් තෝරන්න",sub:"පසුව සැකසුම් වලින් මෙය වෙනස් කළ හැක",btn:"ඉදිරියට",done:"භාෂාව සිංහල ලෙස සකසා ඇත"},
+  ta:{hello:"வணக்கம்",title:"தயவுசெய்து மொழியைத் தேர்ந்தெடுக்கவும்",sub:"இதை பிறகு அமைப்புகளில் மாற்றலாம்",btn:"தொடரவும்",done:"மொழி தமிழாக அமைக்கப்பட்டது"}
+};
+const $=id=>document.getElementById(id);
+let cur="en";
+function apply(code,animate){
+  cur=code;const t=T[code];
+  document.documentElement.lang=code;
+  const h=$("hello");
+  const set=()=>{h.textContent=t.hello;h.classList.remove("swap")};
+  if(animate){h.classList.add("swap");setTimeout(set,220)}else set();
+  $("title").textContent=t.title;$("sub").textContent=t.sub;$("go").textContent=t.btn;$("toast").textContent="";
+  try{localStorage.setItem("lang",code)}catch(e){}
+}
+document.querySelectorAll('input[name="lang"]').forEach(r=>r.addEventListener("change",()=>apply(r.value,true)));
+$("go").addEventListener("click",e=>{
+  const b=e.currentTarget,r=b.getBoundingClientRect(),s=Math.max(r.width,r.height)*2;
+  const d=document.createElement("span");d.className="rip";
+  d.style.cssText="width:"+s+"px;height:"+s+"px;left:"+(e.clientX-r.left-s/2)+"px;top:"+(e.clientY-r.top-s/2)+"px";
+  b.appendChild(d);setTimeout(()=>d.remove(),650);
+  $("toast").textContent=T[cur].done;
+});
+$("theme").addEventListener("click",()=>{
+  const root=document.documentElement;
+  const dark=root.dataset.theme?root.dataset.theme==="dark":matchMedia("(prefers-color-scheme: dark)").matches;
+  root.dataset.theme=dark?"light":"dark";
+});
+try{
+  const s=localStorage.getItem("lang");
+  if(s&&T[s]){document.querySelector('input[value="'+s+'"]').checked=true;apply(s,false)}
+}catch(e){}
+</script>
+</body>
+</html>
