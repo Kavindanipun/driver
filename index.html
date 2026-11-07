@@ -11,8 +11,6 @@
   --bg:#e6eaf0; --text:#434d5f; --muted:#8a94a6; --hi:#ffffff; --lo:#c3cad7;
   --a1:#7fe0ee; --a2:#4fb4d6; --a3:#8b7bea; --on:#ffffff;
   box-sizing:border-box;
-  padding-top:env(safe-area-inset-top,0px);
-  padding-bottom:env(safe-area-inset-bottom,0px);
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){--bg:#2a2e36;--text:#dde2ec;--muted:#8b94a8;--hi:#353a45;--lo:#1d2026;--a1:#5fd3e6;--a2:#33a3c8;--a3:#8a7cf0;--on:#0e1a1e}
@@ -21,6 +19,7 @@
 *,*::before,*::after{box-sizing:border-box}
 [hidden]{display:none!important}
 html,body{margin:0;min-height:100%}
+html{overflow-x:hidden;overscroll-behavior-y:none}
 body{
   min-height:100dvh;background:var(--bg);color:var(--text);
   font-family:"Poppins","Noto Sans Sinhala","Noto Sans Tamil",system-ui,sans-serif;
@@ -28,8 +27,8 @@ body{
 }
 .phone{
   position:relative;z-index:1;width:100%;max-width:480px;
-  min-height:calc(100dvh - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));
-  padding:22px clamp(20px,6vw,32px) 28px;display:flex;flex-direction:column;
+  min-height:100dvh;
+  padding:calc(22px + env(safe-area-inset-top,0px)) clamp(20px,6vw,32px) calc(28px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;
   transition:opacity .3s ease,transform .3s ease;
 }
 .phone.out{opacity:0;transform:translateX(-28px)}
@@ -72,7 +71,7 @@ body{
   stroke-dasharray:22;stroke-dashoffset:22;transition:stroke-dashoffset .3s ease .05s}
 
 /* screen 1 */
-.stage{position:relative;width:clamp(150px,54vw,210px);height:clamp(150px,54vw,210px);margin:46px auto 22px;display:grid;place-items:center;cursor:pointer}
+.stage{position:relative;width:clamp(130px,min(54vw,25dvh),210px);height:clamp(130px,min(54vw,25dvh),210px);margin:clamp(30px,5dvh,46px) auto clamp(14px,2.5dvh,22px);display:grid;place-items:center;cursor:pointer}
 .ring{position:absolute;inset:0;border-radius:50%;box-shadow:inset 9px 9px 18px var(--lo),inset -9px -9px 18px var(--hi)}
 .road{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
 .dash{transform-origin:50px 50px;animation:spin 26s linear infinite reverse}
@@ -92,7 +91,7 @@ body{
 @keyframes float{50%{transform:translateY(-6px)}}
 h1{margin:14px 0 4px;text-align:center;font-size:19px;font-weight:600;line-height:1.5}
 .sub{margin:0;text-align:center;color:var(--muted);font-size:12.5px}
-.options{margin:24px 0 0;padding:0;border:0;display:flex;flex-direction:column;gap:18px}
+.options{margin:clamp(14px,2.5dvh,24px) 0 0;padding:0;border:0;display:flex;flex-direction:column;gap:clamp(12px,2dvh,18px)}
 .opt{position:relative;display:block}
 .opt input,.v input,.fp input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer;z-index:2}
 .card{display:flex;align-items:center;gap:16px;padding:14px 18px;border-radius:22px;background:var(--bg);
@@ -146,7 +145,7 @@ h2{margin:0 0 4px;font-size:21px;font-weight:600;line-height:1.4}
 .v input:checked + .vc .tick{stroke-dashoffset:0}
 .fld{margin-top:20px}
 .fld label{display:block;font-size:13px;font-weight:600;color:var(--muted);margin:0 0 10px 6px}
-.fld input{width:100%;border:0;padding:15px 20px;border-radius:20px;background:var(--bg);color:var(--text);font:500 14px inherit;font-family:inherit;outline:none;
+.fld input{width:100%;border:0;padding:15px 20px;border-radius:20px;background:var(--bg);color:var(--text);font-size:14px;font-weight:500;font-family:inherit;outline:none;
   box-shadow:inset 5px 5px 10px var(--lo),inset -5px -5px 10px var(--hi);transition:box-shadow .2s}
 .fld input::placeholder{color:var(--muted);opacity:.75}
 .fld input:focus{box-shadow:inset 5px 5px 10px var(--lo),inset -5px -5px 10px var(--hi),0 0 0 2px var(--a2)}
@@ -159,6 +158,94 @@ h2{margin:0 0 4px;font-size:21px;font-weight:600;line-height:1.4}
 .fp input:checked + .pill{box-shadow:inset 5px 5px 10px var(--lo),inset -5px -5px 10px var(--hi);color:var(--a2);font-weight:600}
 .fp input:checked + .pill::before{background:linear-gradient(145deg,var(--a1),var(--a2));box-shadow:0 0 8px color-mix(in srgb,var(--a1) 70%,transparent)}
 .cta{margin-top:30px}
+
+/* screen 3: dashboard */
+:root{--y1:#ffe685;--y2:#ffc22e;--ya:#c98a00}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--ya:#ffd25a}}
+:root[data-theme="dark"]{--ya:#ffd25a}
+#s3{max-width:560px;padding-bottom:calc(130px + env(safe-area-inset-bottom,0px))}
+.dtop{display:flex;justify-content:space-between;align-items:flex-start;gap:12px}
+.brand3{font-size:11.5px;font-weight:600;color:var(--muted);letter-spacing:.6px}
+.greet{margin:4px 0 0;font-size:20px;font-weight:600;line-height:1.4}
+.dbtns{display:flex;gap:12px}
+.av{color:var(--ya)}
+.vchip{align-self:flex-start;display:flex;align-items:center;gap:10px;margin-top:14px;padding:7px 16px 7px 8px;border-radius:22px;font-size:12.5px;font-weight:600;
+  box-shadow:inset 3px 3px 6px var(--lo),inset -3px -3px 6px var(--hi)}
+.ci{width:30px;height:30px;border-radius:50%;display:grid;place-items:center;color:var(--ya);background:var(--bg);box-shadow:3px 3px 6px var(--lo),-3px -3px 6px var(--hi)}
+.ci svg{width:18px;height:18px}
+.cn{padding-left:10px;border-left:1.5px solid var(--lo);color:var(--muted);letter-spacing:.4px}
+.seg{position:relative;display:grid;grid-template-columns:repeat(3,1fr);margin-top:16px;padding:5px;border-radius:20px;box-shadow:inset 4px 4px 8px var(--lo),inset -4px -4px 8px var(--hi)}
+.thumb{position:absolute;top:5px;bottom:5px;left:5px;width:calc((100% - 10px)/3);border-radius:16px;background:var(--bg);
+  box-shadow:4px 4px 8px var(--lo),-4px -4px 8px var(--hi);transform:translateX(calc(var(--idx,0)*100%));transition:transform .35s cubic-bezier(.3,1.3,.5,1)}
+.seg button{position:relative;z-index:1;border:0;background:none;padding:10px 4px;font-family:inherit;font-size:13px;font-weight:600;color:var(--muted);cursor:pointer;transition:color .25s}
+.seg button.on{color:var(--text)}
+.hero3{position:relative;margin-top:18px;padding:22px 20px;border-radius:28px;overflow:hidden;color:#2d2100;
+  background:linear-gradient(135deg,var(--y1),#ffc933 60%,#ffb21e);box-shadow:10px 10px 22px var(--lo),-10px -10px 22px var(--hi)}
+.hero3::before{content:"";position:absolute;right:-40px;top:-50px;width:170px;height:170px;border-radius:50%;background:rgba(255,255,255,.3)}
+.hero3::after{content:"";position:absolute;left:-30px;bottom:-64px;width:150px;height:150px;border-radius:50%;background:rgba(255,255,255,.18)}
+.hr{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:center;gap:12px}
+.nl{font-size:12.5px;font-weight:500;opacity:.8}
+.net{font-size:34px;font-weight:600;line-height:1.3;margin:2px 0}
+.ns{font-size:11.5px;opacity:.75;line-height:1.5}
+.mring{position:relative;width:74px;height:74px;flex:none}
+.mring svg{width:100%;height:100%;transform:rotate(-90deg)}
+.mring b{position:absolute;inset:0;display:grid;place-items:center;font-size:15px;font-weight:600}
+.two,.three{display:grid;gap:14px;margin-top:18px}
+.two{grid-template-columns:1fr 1fr}.three{grid-template-columns:repeat(3,1fr);margin-top:0}
+.mc{display:flex;align-items:center;gap:12px;padding:14px;border-radius:22px;box-shadow:7px 7px 14px var(--lo),-7px -7px 14px var(--hi)}
+.mi{width:38px;height:38px;border-radius:50%;flex:none;display:grid;place-items:center;box-shadow:inset 3px 3px 6px var(--lo),inset -3px -3px 6px var(--hi)}
+.mi svg{width:18px;height:18px}.mi.up{color:var(--a2)}.mi.dn{color:var(--a3)}
+.ml{font-size:11.5px;color:var(--muted)}.mv{font-size:15px;font-weight:600;line-height:1.5}
+.sh{display:flex;justify-content:space-between;align-items:center;margin:28px 0 14px;font-size:16px;font-weight:600}
+.rc{font-size:11.5px;font-weight:500;color:var(--muted)}
+.fi{color:var(--muted)}.fi svg{width:20px;height:20px}
+.chips{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+.ch{border:0;cursor:pointer;padding:9px 16px;border-radius:18px;background:var(--bg);color:var(--muted);font-family:inherit;font-size:13px;font-weight:500;
+  box-shadow:5px 5px 10px var(--lo),-5px -5px 10px var(--hi);transition:box-shadow .25s,color .25s}
+.ch.on{box-shadow:inset 4px 4px 8px var(--lo),inset -4px -4px 8px var(--hi);color:var(--text);font-weight:600}
+.ch.on::before{content:"";display:inline-block;width:8px;height:8px;margin-right:8px;border-radius:50%;background:var(--y2);box-shadow:0 0 8px var(--y2)}
+.stat{padding:16px 6px;border-radius:22px;text-align:center;box-shadow:7px 7px 14px var(--lo),-7px -7px 14px var(--hi)}
+.stat span[data-ic]{display:inline-grid;color:var(--ya)}.stat svg{width:22px;height:22px}
+.sv{font-size:20px;font-weight:600;margin-top:6px}.sl{font-size:12px;color:var(--muted)}
+.ecard{padding:20px 18px;border-radius:26px;box-shadow:7px 7px 14px var(--lo),-7px -7px 14px var(--hi)}
+.er{margin-bottom:18px}.er:last-child{margin-bottom:0}
+.erh{display:flex;justify-content:space-between;font-size:13.5px;margin-bottom:9px}
+.erh b{font-weight:600}
+.tr{height:10px;border-radius:6px;box-shadow:inset 2px 2px 4px var(--lo),inset -2px -2px 4px var(--hi)}
+.tr i{display:block;height:100%;width:0;border-radius:6px;transition:width .9s cubic-bezier(.2,.8,.2,1)}
+.qa{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.qb{border:0;cursor:pointer;display:flex;justify-content:center;align-items:center;gap:8px;padding:15px 8px;border-radius:26px;background:var(--bg);color:var(--text);
+  font-family:inherit;font-size:13.5px;font-weight:600;box-shadow:6px 6px 12px var(--lo),-6px -6px 12px var(--hi);transition:box-shadow .2s,transform .2s}
+.qb:active{transform:scale(.98);box-shadow:inset 4px 4px 8px var(--lo),inset -4px -4px 8px var(--hi)}
+.qb.p{background:linear-gradient(135deg,var(--y1),var(--y2));color:#2d2100;box-shadow:0 8px 18px rgba(255,184,0,.35),5px 5px 10px var(--lo),-5px -5px 10px var(--hi)}
+.qb svg{width:18px;height:18px}.qb span[data-ic]{display:grid}
+.ins{display:flex;gap:14px;margin-top:20px;padding:18px;border-radius:24px;box-shadow:inset 5px 5px 10px var(--lo),inset -5px -5px 10px var(--hi)}
+.bi{width:40px;height:40px;border-radius:50%;flex:none;display:grid;place-items:center;color:#2d2100;background:linear-gradient(135deg,var(--y1),var(--y2));box-shadow:0 0 14px rgba(255,194,46,.5)}
+.bi svg{width:20px;height:20px}
+.it{font-size:14.5px;font-weight:600;margin-bottom:4px}
+.ins p{margin:0;font-size:12.5px;line-height:1.65;color:var(--muted)}
+.ins p.if{margin-top:8px;color:var(--ya);font-weight:600}
+.nav{position:fixed;left:50%;bottom:calc(14px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:20;width:min(calc(100% - 28px),440px);
+  display:grid;grid-template-columns:1fr 1fr 82px 1fr 1fr;align-items:center;padding:10px 6px;border-radius:32px;background:var(--bg);
+  box-shadow:8px 8px 20px var(--lo),-8px -8px 20px var(--hi)}
+.nb{border:0;background:none;color:var(--muted);display:flex;flex-direction:column;align-items:center;gap:3px;font-family:inherit;font-size:10.5px;font-weight:500;padding:4px 2px;cursor:pointer}
+.ni{width:44px;height:34px;border-radius:15px;display:grid;place-items:center;transition:box-shadow .25s,color .25s}
+.ni svg{width:21px;height:21px}
+.nb.on{color:var(--text);font-weight:600}
+.nb.on .ni{color:var(--ya);box-shadow:inset 3px 3px 6px var(--lo),inset -3px -3px 6px var(--hi)}
+.fc{position:relative;display:grid;place-items:center}
+.fab{width:62px;height:62px;margin-top:-38px;border:0;border-radius:50%;cursor:pointer;display:grid;place-items:center;color:#2d2100;
+  background:linear-gradient(145deg,var(--y1),var(--y2));box-shadow:0 12px 24px rgba(255,184,0,.45),5px 5px 10px var(--lo),-5px -5px 10px var(--hi);
+  border:5px solid var(--bg);transition:transform .3s cubic-bezier(.3,1.4,.5,1)}
+.fab svg{width:26px;height:26px;stroke-width:2.4}
+.fab.open{transform:rotate(135deg)}
+.fam{position:absolute;bottom:62px;left:50%;display:flex;gap:12px;opacity:0;pointer-events:none;white-space:nowrap;transform:translateX(-50%) translateY(14px) scale(.9);transition:opacity .25s,transform .3s cubic-bezier(.3,1.4,.5,1)}
+.fam.open{opacity:1;pointer-events:auto;transform:translateX(-50%) translateY(0)}
+.fam .qb{padding:12px 16px;border-radius:22px;font-size:12.5px}
+.ftoast{position:fixed;left:50%;bottom:calc(104px + env(safe-area-inset-bottom,0px));z-index:30;transform:translateX(-50%) translateY(14px);opacity:0;pointer-events:none;
+  padding:11px 20px;border-radius:20px;background:var(--bg);color:var(--text);font-size:13px;font-weight:500;white-space:nowrap;
+  box-shadow:6px 6px 14px var(--lo),-6px -6px 14px var(--hi);transition:opacity .25s,transform .25s}
+.ftoast.show{opacity:1;transform:translateX(-50%)}
 
 .in{opacity:0;transform:translateY(16px);animation:in .6s cubic-bezier(.2,.8,.2,1) forwards;animation-delay:calc(var(--i)*80ms)}
 @keyframes in{to{opacity:1;transform:none}}
@@ -267,23 +354,104 @@ h2{margin:0 0 4px;font-size:21px;font-weight:600;line-height:1.4}
   <p class="toast" id="toast2" aria-live="polite"></p>
 </main>
 
+<!-- Screen 3: dashboard -->
+<main class="phone" id="s3" hidden>
+  <header class="dtop in" style="--i:0">
+    <div><span class="brand3" data-t="brand">DRIVER WALLET</span><h2 class="greet" id="greet"></h2></div>
+    <div class="dbtns">
+      <button class="tbtn" id="theme2" type="button" aria-label="Theme"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg></button>
+      <span class="tbtn av" data-ic="user" aria-hidden="true"></span>
+    </div>
+  </header>
+  <div class="vchip in" style="--i:1"><span class="ci" id="chipIcon"></span><span id="chipName"></span><span class="cn" id="chipNum" hidden></span></div>
+  <div class="seg in" id="periods" style="--i:1;--idx:0"><i class="thumb"></i>
+    <button type="button" class="on" data-t="p_today">Today</button><button type="button" data-t="p_7">7 Days</button><button type="button" data-t="p_month">Month</button></div>
+
+  <section class="hero3 in" style="--i:2"><div class="hr">
+    <div><div class="nl" data-t="netL"></div><div class="net" id="net">Rs. 0</div><div class="ns" data-t="netS"></div></div>
+    <div class="mring"><svg viewBox="0 0 74 74"><circle cx="37" cy="37" r="30" fill="none" stroke="rgba(45,33,0,.16)" stroke-width="7"/>
+      <circle id="mArc" cx="37" cy="37" r="30" fill="none" stroke="#2d2100" stroke-width="7" stroke-linecap="round" stroke-dasharray="188.5" stroke-dashoffset="188.5" style="transition:stroke-dashoffset .9s ease"/></svg><b id="mpct">0%</b></div>
+  </div></section>
+
+  <div class="two in" style="--i:3">
+    <div class="mc"><span class="mi up" data-ic="up"></span><div><div class="ml" data-t="grossL"></div><div class="mv" id="gross">Rs. 0</div></div></div>
+    <div class="mc"><span class="mi dn" data-ic="down"></span><div><div class="ml" data-t="costsL"></div><div class="mv" id="costs">Rs. 0</div></div></div>
+  </div>
+
+  <div class="sh in" style="--i:4"><span data-t="po"></span><span class="fi" data-ic="sliders"></span></div>
+  <div class="chips in" id="plats" style="--i:4"><button type="button" class="ch on" data-t="allp">All Platforms</button><button type="button" class="ch">PickMe</button><button type="button" class="ch">Uber</button></div>
+  <div class="three in" style="--i:5">
+    <div class="stat"><span data-ic="route"></span><div class="sv" id="trips">0</div><div class="sl" data-t="tripsL"></div></div>
+    <div class="stat"><span data-ic="gauge"></span><div class="sv" id="km">0</div><div class="sl">km</div></div>
+    <div class="stat"><span data-ic="wallet"></span><div class="sv" id="margin">0%</div><div class="sl" data-t="marginL"></div></div>
+  </div>
+
+  <div class="sh in" style="--i:6"><span data-t="eb"></span><span class="rc" data-t="rec"></span></div>
+  <div class="ecard in" style="--i:6">
+    <div class="er"><div class="erh"><span data-t="feesL"></span><b id="fees">Rs. 0</b></div><div class="tr"><i id="bFees" style="background:linear-gradient(90deg,var(--a2),var(--a1))"></i></div></div>
+    <div class="er"><div class="erh"><span data-t="fuelL"></span><b id="fuelv">Rs. 0</b></div><div class="tr"><i id="bFuel" style="background:linear-gradient(90deg,var(--y2),var(--y1))"></i></div></div>
+    <div class="er"><div class="erh"><span data-t="otherL"></span><b id="other">Rs. 0</b></div><div class="tr"><i id="bOther" style="background:linear-gradient(90deg,var(--a3),var(--a2))"></i></div></div>
+  </div>
+
+  <div class="sh in" style="--i:7"><span data-t="qa"></span></div>
+  <div class="qa in" style="--i:7">
+    <button class="qb p" id="qTrip" type="button"><span data-ic="plus"></span><span data-t="addTrip"></span></button>
+    <button class="qb" id="qExp" type="button"><span data-ic="receipt"></span><span data-t="addExp"></span></button>
+  </div>
+  <div class="ins in" style="--i:8"><span class="bi" data-ic="bulb"></span>
+    <div><div class="it" data-t="ins_t"></div><p data-t="ins_b"></p><p class="if" id="insF"></p></div></div>
+
+  <nav class="nav" aria-label="Main">
+    <button class="nb on" type="button"><span class="ni" data-ic="home"></span><span data-t="n_home">Home</span></button>
+    <button class="nb" type="button" data-soon><span class="ni" data-ic="route"></span><span data-t="n_trips">Trips</span></button>
+    <div class="fc">
+      <div class="fam" id="fam">
+        <button class="qb" id="mTrip" type="button"><span data-ic="plus"></span><span data-t="addTrip"></span></button>
+        <button class="qb" id="mExp" type="button"><span data-ic="receipt"></span><span data-t="addExp"></span></button>
+      </div>
+      <button class="fab" id="fab" type="button" aria-label="Add" data-ic="plus"></button>
+    </div>
+    <button class="nb" type="button" data-soon><span class="ni" data-ic="chart"></span><span data-t="n_reports">Reports</span></button>
+    <button class="nb" type="button" data-soon><span class="ni" data-ic="gear"></span><span data-t="n_set">Settings</span></button>
+  </nav>
+  <div class="ftoast" id="ft" role="status"></div>
+</main>
+
 <script>
 const T={
 en:{hello:"Hello",title:"Please choose a language",sub:"You can change this later in settings",btn:"Continue",
  brand:"DRIVER WALLET",step:"Step 2 of 3",welcome:"Welcome aboard!",lead:"Let\u2019s set up your vehicle to calculate your earnings and expenses accurately.",
  sel:"Select your vehicle type",v_moto:"Motorbike",v_tuk:"Tuk Tuk",v_car:"Car",v_van:"Van",v_other:"Other",
  nameL:"Vehicle name / model (optional)",numL:"Vehicle number (optional)",fuel:"Fuel type",
- f_petrol:"Petrol",f_diesel:"Diesel",f_electric:"Electric",f_hybrid:"Hybrid",next:"Continue to Platform Setup",saved:"Saved! Platform setup is next.",ex:"e.g. ",back:"Back"},
+ f_petrol:"Petrol",f_diesel:"Diesel",f_electric:"Electric",f_hybrid:"Hybrid",next:"Continue to Platform Setup",saved:"Saved! Platform setup is next.",ex:"e.g. ",back:"Back",
+ g_m:"Good morning, Driver!",g_a:"Good afternoon, Driver!",g_e:"Good evening, Driver!",p_today:"Today",p_7:"7 Days",p_month:"Month",
+ netL:"Estimated Net Profit",netS:"After recorded commission, fuel & expenses",grossL:"Gross Earnings",costsL:"Total Costs",
+ po:"Platform Overview",allp:"All Platforms",tripsL:"Trips",marginL:"Margin",eb:"Expense Breakdown",rec:"Recorded costs",
+ feesL:"Platform fees",fuelL:"Fuel",otherL:"Other expenses",qa:"Quick Actions",addTrip:"Add Trip",addExp:"Add Expense",
+ ins_t:"Your daily insights",ins_b:"Track your real trip earnings, pickup distance, platform deductions, fuel and vehicle expenses to improve these estimates.",
+ ins_f:"Fuel makes up {p}% of your costs.",n_home:"Home",n_trips:"Trips",n_reports:"Reports",n_set:"Settings",soon:"Coming soon",tripAdded:"Trip added",expAdded:"Expense added"},
 si:{hello:"ආයුබෝවන්",title:"කරුණාකර භාෂාවක් තෝරන්න",sub:"පසුව සැකසුම් වලින් මෙය වෙනස් කළ හැක",btn:"ඉදිරියට",
  brand:"රියදුරු පසුම්බිය",step:"පියවර 2 / 3",welcome:"සාදරයෙන් පිළිගනිමු!",lead:"ඔබේ ආදායම් සහ වියදම් නිවැරදිව ගණනය කිරීමට ඔබේ වාහනය සකසමු.",
  sel:"ඔබේ වාහන වර්ගය තෝරන්න",v_moto:"යතුරුපැදිය",v_tuk:"ත්\u200dරීරෝද රථය",v_car:"කාර්",v_van:"වෑන්",v_other:"වෙනත්",
  nameL:"වාහනයේ නම / මාදිලිය (විකල්ප)",numL:"වාහන අංකය (විකල්ප)",fuel:"ඉන්ධන වර්ගය",
- f_petrol:"පෙට්\u200dරල්",f_diesel:"ඩීසල්",f_electric:"විදුලි",f_hybrid:"හයිබ්\u200dරිඩ්",next:"වේදිකා සැකසුමට ඉදිරියට",saved:"සුරැකිණි! ඊළඟට වේදිකා සැකසුම.",ex:"උදා: ",back:"ආපසු"},
+ f_petrol:"පෙට්\u200dරල්",f_diesel:"ඩීසල්",f_electric:"විදුලි",f_hybrid:"හයිබ්\u200dරිඩ්",next:"වේදිකා සැකසුමට ඉදිරියට",saved:"සුරැකිණි! ඊළඟට වේදිකා සැකසුම.",ex:"උදා: ",back:"ආපසු",
+ g_m:"සුබ උදෑසනක්, රියදුරු!",g_a:"සුබ දහවලක්, රියදුරු!",g_e:"සුබ සන්ධ්‍යාවක්, රියදුරු!",p_today:"අද",p_7:"දින 7",p_month:"මාසය",
+ netL:"ඇස්තමේන්තුගත ශුද්ධ ලාභය",netS:"සටහන් කළ කොමිස්, ඉන්ධන සහ වියදම්වලින් පසු",grossL:"දළ ආදායම",costsL:"මුළු වියදම",
+ po:"වේදිකා දළ විශ්ලේෂණය",allp:"සියලු වේදිකා",tripsL:"ගමන්",marginL:"ආන්තිකය",eb:"වියදම් බෙදීම",rec:"සටහන් කළ වියදම්",
+ feesL:"වේදිකා ගාස්තු",fuelL:"ඉන්ධන",otherL:"වෙනත් වියදම්",qa:"ඉක්මන් ක්‍රියා",addTrip:"ගමනක් එක් කරන්න",addExp:"වියදමක් එක් කරන්න",
+ ins_t:"ඔබේ දෛනික අවබෝධය",ins_b:"මෙම ඇස්තමේන්තු වැඩිදියුණු කිරීමට ඔබේ සැබෑ ගමන් ආදායම්, ගමන් දුර, වේදිකා කපාහැරීම්, ඉන්ධන සහ වාහන වියදම් සටහන් කරන්න.",
+ ins_f:"ඉන්ධන ඔබේ වියදම්වලින් {p}%ක් වේ.",n_home:"මුල් පිටුව",n_trips:"ගමන්",n_reports:"වාර්තා",n_set:"සැකසුම්",soon:"ඉක්මනින් එනවා",tripAdded:"ගමන එකතු කළා",expAdded:"වියදම එකතු කළා"},
 ta:{hello:"வணக்கம்",title:"தயவுசெய்து மொழியைத் தேர்ந்தெடுக்கவும்",sub:"இதை பிறகு அமைப்புகளில் மாற்றலாம்",btn:"தொடரவும்",
  brand:"ஓட்டுநர் பணப்பை",step:"படி 2 / 3",welcome:"வரவேற்கிறோம்!",lead:"உங்கள் வருமானம் மற்றும் செலவுகளைத் துல்லியமாகக் கணக்கிட உங்கள் வாகனத்தை அமைப்போம்.",
  sel:"உங்கள் வாகன வகையைத் தேர்ந்தெடுக்கவும்",v_moto:"மோட்டார் சைக்கிள்",v_tuk:"முச்சக்கர வண்டி",v_car:"கார்",v_van:"வேன்",v_other:"மற்றவை",
  nameL:"வாகனப் பெயர் / மாடல் (விருப்பம்)",numL:"வாகன எண் (விருப்பம்)",fuel:"எரிபொருள் வகை",
- f_petrol:"பெட்ரோல்",f_diesel:"டீசல்",f_electric:"மின்சாரம்",f_hybrid:"ஹைபிரிட்",next:"தளம் அமைப்புக்குத் தொடரவும்",saved:"சேமிக்கப்பட்டது! அடுத்து தளம் அமைப்பு.",ex:"எ.கா: ",back:"பின்செல்"}
+ f_petrol:"பெட்ரோல்",f_diesel:"டீசல்",f_electric:"மின்சாரம்",f_hybrid:"ஹைபிரிட்",next:"தளம் அமைப்புக்குத் தொடரவும்",saved:"சேமிக்கப்பட்டது! அடுத்து தளம் அமைப்பு.",ex:"எ.கா: ",back:"பின்செல்",
+ g_m:"காலை வணக்கம், ஓட்டுநரே!",g_a:"மதிய வணக்கம், ஓட்டுநரே!",g_e:"மாலை வணக்கம், ஓட்டுநரே!",p_today:"இன்று",p_7:"7 நாள்",p_month:"மாதம்",
+ netL:"மதிப்பிடப்பட்ட நிகர லாபம்",netS:"பதிவான கமிஷன், எரிபொருள் மற்றும் செலவுகளுக்குப் பிறகு",grossL:"மொத்த வருமானம்",costsL:"மொத்த செலவுகள்",
+ po:"தள மேலோட்டம்",allp:"அனைத்து தளங்கள்",tripsL:"பயணங்கள்",marginL:"மார்ஜின்",eb:"செலவு விவரம்",rec:"பதிவான செலவுகள்",
+ feesL:"தளக் கட்டணங்கள்",fuelL:"எரிபொருள்",otherL:"பிற செலவுகள்",qa:"விரைவு செயல்கள்",addTrip:"பயணம் சேர்",addExp:"செலவு சேர்",
+ ins_t:"உங்கள் தினசரி நுண்ணறிவுகள்",ins_b:"இந்த மதிப்பீடுகளை மேம்படுத்த உங்கள் உண்மையான பயண வருமானம், பயண தூரம், தளக் கழிவுகள், எரிபொருள் மற்றும் வாகனச் செலவுகளைப் பதிவு செய்யுங்கள்.",
+ ins_f:"எரிபொருள் உங்கள் செலவுகளில் {p}% ஆகும்.",n_home:"முகப்பு",n_trips:"பயணங்கள்",n_reports:"அறிக்கைகள்",n_set:"அமைப்புகள்",soon:"விரைவில் வரும்",tripAdded:"பயணம் சேர்க்கப்பட்டது",expAdded:"செலவு சேர்க்கப்பட்டது"}
 };
 const H={en:"Beep beep!",si:"පීප් පීප්!",ta:"பீப் பீப்!"};
 const SAMPLE={moto:"Honda Dio, Bajaj Pulsar",tuk:"Bajaj RE, TVS King",car:"Suzuki Alto, Toyota Aqua",van:"Toyota Hiace, Nissan Caravan",other:"Mahindra Bolero"};
@@ -336,10 +504,11 @@ document.querySelectorAll('input[name="lang"]').forEach(r=>r.addEventListener("c
   apply(r.value,true);rate(3);clearTimeout(bt);bt=setTimeout(()=>rate(1),1000)}));
 document.querySelectorAll('input[name="veh"]').forEach(r=>r.addEventListener("change",()=>{veh=r.value;hero();placeholders()}));
 
+let scr=1;
 function show(n){
-  const from=$(n===2?"s1":"s2"),to=$(n===2?"s2":"s1");
+  const from=$("s"+scr),to=$("s"+n);scr=n;
   from.classList.add("out");
-  setTimeout(()=>{from.hidden=true;from.classList.remove("out");to.hidden=false;window.scrollTo(0,0);if(n===1)rate(1)},300);
+  setTimeout(()=>{from.hidden=true;from.classList.remove("out");to.hidden=false;window.scrollTo(0,0);if(n===1)rate(1);if(n===3){shown={};setTimeout(()=>render(true),80)}},300);
 }
 function ripple(e){
   const b=e.currentTarget,r=b.getBoundingClientRect(),s=Math.max(r.width,r.height)*2;
@@ -349,12 +518,81 @@ function ripple(e){
 }
 $("go").addEventListener("click",e=>{ripple(e);setTimeout(()=>show(2),180)});
 $("back").addEventListener("click",()=>show(1));
-$("save").addEventListener("click",e=>{ripple(e);$("toast2").textContent=T[cur].saved});
+$("save").addEventListener("click",e=>{ripple(e);$("toast2").textContent=T[cur].saved;setTimeout(()=>show(3),550)});
 $("theme").addEventListener("click",()=>{
   const root=document.documentElement;
   const dark=root.dataset.theme?root.dataset.theme==="dark":matchMedia("(prefers-color-scheme: dark)").matches;
   root.dataset.theme=dark?"light":"dark";
 });
+
+const I2={
+ home:'<path d="M4 11l8-6.5 8 6.5V19a1 1 0 0 1-1 1h-4v-5h-6v5H5a1 1 0 0 1-1-1z"/>',
+ route:'<circle cx="6" cy="18" r="2"/><circle cx="18" cy="6" r="2"/><path d="M8 18h7a3 3 0 0 0 0-6H9a3 3 0 0 1 0-6h7"/>',
+ chart:'<path d="M5 20V11M12 20V5M19 20v-7"/>',
+ gear:'<circle cx="12" cy="12" r="3"/><path d="M12 3v2.5M12 18.5V21M3 12h2.5M18.5 12H21M5.6 5.6l1.8 1.8M16.6 16.6l1.8 1.8M5.6 18.4l1.8-1.8M16.6 7.4l1.8-1.8"/>',
+ plus:'<path d="M12 5v14M5 12h14"/>',
+ user:'<circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c.8-3.6 3.6-5.5 7-5.5s6.2 1.9 7 5.5"/>',
+ up:'<path d="M12 19V6M6 11l6-6 6 6"/>',down:'<path d="M12 5v13M6 13l6 6 6-6"/>',
+ gauge:'<path d="M4 16a8 8 0 1 1 16 0"/><path d="M12 16l4-5"/>',
+ wallet:'<rect x="3.5" y="6" width="17" height="12.5" rx="2.5"/><path d="M16 12.5h2M3.5 9.5h13"/>',
+ receipt:'<path d="M6 3.5h12v17l-3-2-3 2-3-2-3 2z"/><path d="M9 8.5h6M9 12h6"/>',
+ bulb:'<path d="M9 18h6M10 21h4M12 3.5a5.5 5.5 0 0 0-3.2 10c.8.6 1.2 1.3 1.2 2.2h4c0-.9.4-1.6 1.2-2.2A5.5 5.5 0 0 0 12 3.5z"/>',
+ sliders:'<path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/>'
+};
+document.querySelectorAll("[data-ic]").forEach(e=>e.innerHTML=svg(I2[e.dataset.ic]));
+
+const BASE={gross:8500,fees:1120,fuel:1900,other:620,trips:17,km:128};
+let per=0,plat=0,shown={},fto;
+const fmtR=n=>"Rs. "+Math.round(n).toLocaleString("en-US");
+const fmtN=n=>Math.round(n).toLocaleString("en-US");
+const fmtP=n=>Math.round(n)+"%";
+function calc(){
+  const f=[1,6.2,26.5][per]*[1,.6,.4][plat];
+  const g=BASE.gross*f,fe=BASE.fees*f,fu=BASE.fuel*f,o=BASE.other*f,c=fe+fu+o,n=g-c;
+  return{gross:g,costs:c,net:n,fees:fe,fuel:fu,other:o,trips:Math.max(1,Math.round(BASE.trips*f)),km:Math.round(BASE.km*f),margin:g?Math.round(n/g*100):0};
+}
+function tween(id,to,f,anim){
+  const el=$(id),from=shown[id]||0;shown[id]=to;
+  const k=el._k=(el._k||0)+1;
+  if(!anim||matchMedia("(prefers-reduced-motion: reduce)").matches){el.textContent=f(to);return}
+  const t0=performance.now();
+  (function step(t){
+    if(el._k!==k)return;
+    const p=Math.min(1,(t-t0)/650),e=1-Math.pow(1-p,3);
+    el.textContent=f(from+(to-from)*e);
+    if(p<1)requestAnimationFrame(step);
+  })(t0);
+}
+function render(anim){
+  const v=calc(),t=T[cur];
+  tween("net",v.net,fmtR,anim);tween("gross",v.gross,fmtR,anim);tween("costs",v.costs,fmtR,anim);
+  tween("fees",v.fees,fmtR,anim);tween("fuelv",v.fuel,fmtR,anim);tween("other",v.other,fmtR,anim);
+  tween("trips",v.trips,fmtN,anim);tween("km",v.km,fmtN,anim);tween("margin",v.margin,fmtP,anim);tween("mpct",v.margin,fmtP,anim);
+  const m=Math.max(v.fees,v.fuel,v.other)||1;
+  $("bFees").style.width=v.fees/m*100+"%";$("bFuel").style.width=v.fuel/m*100+"%";$("bOther").style.width=v.other/m*100+"%";
+  $("mArc").style.strokeDashoffset=188.5*(1-Math.max(0,Math.min(100,v.margin))/100);
+  const h=new Date().getHours();
+  $("greet").textContent=t[h<12?"g_m":h<17?"g_a":"g_e"];
+  $("insF").textContent=t.ins_f.replace("{p}",Math.round(v.fuel/v.costs*100));
+  $("chipIcon").innerHTML=svg(IC[veh]);
+  $("chipName").textContent=$("name").value.trim()||t["v_"+veh];
+  const no=$("num").value.trim().toUpperCase();$("chipNum").textContent=no;$("chipNum").hidden=!no;
+}
+document.querySelectorAll("#periods button").forEach((b,i)=>b.addEventListener("click",()=>{
+  per=i;$("periods").style.setProperty("--idx",i);
+  document.querySelectorAll("#periods button").forEach((x,j)=>x.classList.toggle("on",j===i));render(true)}));
+document.querySelectorAll("#plats button").forEach((b,i)=>b.addEventListener("click",()=>{
+  plat=i;document.querySelectorAll("#plats button").forEach((x,j)=>x.classList.toggle("on",j===i));render(true)}));
+function toastF(m){const f=$("ft");f.textContent=m;f.classList.add("show");clearTimeout(fto);fto=setTimeout(()=>f.classList.remove("show"),1800)}
+function closeFab(){$("fab").classList.remove("open");$("fam").classList.remove("open")}
+function addTrip(){BASE.trips++;BASE.km+=7;BASE.gross+=450;BASE.fees+=59;closeFab();render(true);toastF(T[cur].tripAdded)}
+function addExp(){BASE.other+=150;closeFab();render(true);toastF(T[cur].expAdded)}
+$("fab").addEventListener("click",e=>{e.stopPropagation();$("fab").classList.toggle("open");$("fam").classList.toggle("open")});
+document.addEventListener("click",closeFab);
+["qTrip","mTrip"].forEach(i=>$(i).addEventListener("click",addTrip));
+["qExp","mExp"].forEach(i=>$(i).addEventListener("click",addExp));
+document.querySelectorAll(".nb[data-soon]").forEach(b=>b.addEventListener("click",()=>toastF(T[cur].soon)));
+$("theme2").addEventListener("click",()=>$("theme").click());
 
 hero();
 let saved=null;
