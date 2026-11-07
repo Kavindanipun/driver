@@ -62,21 +62,27 @@ body{
 .tbtn svg{width:19px;height:19px}
 
 /* greeting orb */
-.stage{position:relative;width:clamp(150px,54vw,210px);height:clamp(150px,54vw,210px);margin:26px auto 8px;display:grid;place-items:center}
+.stage{position:relative;width:clamp(150px,54vw,210px);height:clamp(150px,54vw,210px);margin:46px auto 22px;display:grid;place-items:center}
 .ring{position:absolute;inset:0;border-radius:50%;
   box-shadow:inset 9px 9px 18px var(--lo),inset -9px -9px 18px var(--hi)}
-.orbit{position:absolute;inset:-2px;border-radius:50%;animation:spin 9s linear infinite}
-.orbit::before{content:"";position:absolute;top:6px;left:50%;width:14px;height:14px;margin-left:-7px;border-radius:50%;
-  background:linear-gradient(145deg,var(--a1),var(--a3));box-shadow:0 0 14px var(--a1),0 0 4px var(--a1)}
+.road,.riders{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.dash{transform-origin:50px 50px;animation:spin 26s linear infinite reverse}
+.riders{animation:spin 8s linear infinite;filter:drop-shadow(1px 2px 2px var(--lo))}
+.w{transform-box:fill-box;transform-origin:center;animation:spin .5s linear infinite}
+.bike{animation:bob .28s ease-in-out infinite alternate}
+@keyframes bob{to{transform:translateY(-.6px)}}
+.stage{cursor:pointer}
+.puff{transform-box:fill-box;transform-origin:center;opacity:0;animation:puff .9s ease-out infinite}
+@keyframes puff{0%{opacity:.6;transform:translate(0,0) scale(.4)}100%{opacity:0;transform:translate(-10px,-4px) scale(1.7)}}
 .orb{
-  position:relative;width:77%;height:77%;border-radius:50%;display:grid;place-items:center;text-align:center;padding:12px;
+  position:relative;width:70%;height:70%;border-radius:50%;display:grid;place-items:center;text-align:center;padding:12px;
   background:linear-gradient(145deg,var(--hi),var(--lo));
   box-shadow:10px 10px 22px var(--lo),-10px -10px 22px var(--hi);
   animation:float 5s ease-in-out infinite;
 }
 .orb::after{content:"";position:absolute;inset:9px;border-radius:50%;background:var(--bg);
   box-shadow:inset 5px 5px 10px var(--lo),inset -5px -5px 10px var(--hi)}
-.hello{position:relative;z-index:1;font-size:clamp(19px,6vw,25px);font-weight:600;line-height:1.3;
+.hello{position:relative;z-index:1;font-size:clamp(18px,5.6vw,23px);font-weight:600;line-height:1.3;
   background:linear-gradient(135deg,var(--a2),var(--a3));-webkit-background-clip:text;background-clip:text;color:transparent;
   transition:opacity .22s ease,transform .22s ease}
 .hello.swap{opacity:0;transform:scale(.85)}
@@ -147,8 +153,38 @@ h1{margin:14px 0 4px;text-align:center;font-size:19px;font-weight:600;line-heigh
   </div>
 
   <div class="stage in" style="--i:1" aria-hidden="true">
-    <div class="ring"></div><div class="orbit"></div>
+    <div class="ring"></div>
+    <svg class="road" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="44" fill="none" style="stroke:var(--lo)" stroke-opacity=".6" stroke-width="8.6"/>
+      <circle cx="50" cy="50" r="48.4" fill="none" style="stroke:var(--hi)" stroke-width=".6"/>
+      <circle cx="50" cy="50" r="39.6" fill="none" style="stroke:var(--hi)" stroke-width=".6"/>
+      <circle class="dash" cx="50" cy="50" r="44" fill="none" style="stroke:var(--hi)" stroke-width=".9" stroke-dasharray="3 2.6"/>
+    </svg>
     <div class="orb"><span class="hello" id="hello">Hello</span></div>
+    <svg class="riders" viewBox="0 0 100 100">
+      <g transform="translate(50 3) scale(.88)"><g class="bike">
+        <path d="M7.4-6.2L20-10.5V-1.8Z" fill="#ffd75e" fill-opacity=".16"/>
+        <circle class="puff" cx="-10.5" cy="-1.4" r="1.3" style="fill:var(--muted)"/>
+        <circle class="puff" cx="-10.5" cy="-1.4" r="1.3" style="fill:var(--muted);animation-delay:.3s"/>
+        <circle class="puff" cx="-10.5" cy="-1.4" r="1.3" style="fill:var(--muted);animation-delay:.6s"/>
+        <rect x="-12" y="-12" width="7.4" height="6.6" rx="1.3" style="fill:var(--a3)"/>
+        <path d="M-11-9H-5.6" stroke="#fff" stroke-width=".7" stroke-opacity=".7"/>
+        <g fill="none" style="stroke:var(--text)" stroke-linecap="round" stroke-linejoin="round">
+          <g class="w"><circle cx="-6.4" cy="0" r="3.3" stroke-width="1.7"/><path d="M-6.4-2.6V2.6M-9 0H-3.8" stroke-width=".5"/></g>
+          <g class="w"><circle cx="6.4" cy="0" r="3.3" stroke-width="1.7"/><path d="M6.4-2.6V2.6M3.8 0H9" stroke-width=".5"/></g>
+          <path d="M-8.2-4.4L-2.6-5.2" stroke-width="1.5"/>
+          <path d="M6.4 0L4.9-6.3L3.9-8.5H2.6" stroke-width="1"/>
+          <path d="M-3.2-1.2L-8.6-1.6" stroke-width="1"/>
+          <path d="M-2.6-5.4L-1.4-9.6" stroke-width="1.9"/>
+          <path d="M-1.4-9.2L2.8-8.4M-2.4-5L1-3.4L1-1" stroke-width=".9"/>
+        </g>
+        <path d="M-8.4-3.9L-2.8-4.7L-.5-6.9L3.9-6.7L4.9-4.3L5.5-1.4L1-1L-3.2-1.4L-6.6-1.6Z" style="fill:var(--a2)"/>
+        <circle cx="-.2" cy="-2.2" r="1.4" style="fill:var(--text)" fill-opacity=".75"/>
+        <circle cx="6.1" cy="-6" r="1" fill="#ffd75e"/>
+        <circle cx="-.9" cy="-11.9" r="2.1" style="fill:var(--text)"/>
+        <path d="M.2-12.4h1.2" stroke="#ffd75e" stroke-width=".7" stroke-linecap="round"/>
+      </g></g>
+    </svg>
   </div>
 
   <h1 class="in" style="--i:2" id="title">Please choose a language</h1>
@@ -197,7 +233,18 @@ function apply(code,animate){
   $("title").textContent=t.title;$("sub").textContent=t.sub;$("go").textContent=t.btn;$("toast").textContent="";
   try{localStorage.setItem("lang",code)}catch(e){}
 }
-document.querySelectorAll('input[name="lang"]').forEach(r=>r.addEventListener("change",()=>apply(r.value,true)));
+const H={en:"Beep beep!",si:"පීප් පීප්!",ta:"பீப் பீப்!"};
+function rate(x){document.querySelectorAll(".riders,.w,.dash").forEach(e=>e.getAnimations().forEach(a=>{if(a.updatePlaybackRate)a.updatePlaybackRate(x)}))}
+let bt;
+function boost(){
+  const h=$("hello");
+  rate(3);h.classList.add("swap");
+  setTimeout(()=>{h.textContent=H[cur];h.classList.remove("swap")},200);
+  clearTimeout(bt);
+  bt=setTimeout(()=>{rate(1);h.classList.add("swap");setTimeout(()=>{h.textContent=T[cur].hello;h.classList.remove("swap")},200)},1500);
+}
+document.querySelector(".stage").addEventListener("click",boost);
+document.querySelectorAll('input[name="lang"]').forEach(r=>r.addEventListener("change",()=>{apply(r.value,true);rate(3);clearTimeout(bt);bt=setTimeout(()=>rate(1),1000)}));
 $("go").addEventListener("click",e=>{
   const b=e.currentTarget,r=b.getBoundingClientRect(),s=Math.max(r.width,r.height)*2;
   const d=document.createElement("span");d.className="rip";
